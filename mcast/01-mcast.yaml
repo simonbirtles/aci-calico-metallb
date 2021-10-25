@@ -1,0 +1,47 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: multicast
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app: mcast-app
+  name: mcast
+  namespace: multicast
+  # annotations:
+    # opflex.cisco.com/endpoint-group: '{ "tenant":"kubeone", "app-profile":"AP_K8_EX", "name":"EPG_MCAST_EX"  }'
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mcast-app
+  template:
+    metadata:
+      labels:
+        app: mcast-app
+    spec:
+      affinity:
+        # keep pods on seperate nodes
+        # will fail to build a pod if no host 
+        # is available not running this app.
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - mcast-app
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: mcast
+          image:  simonbirtles/basic:mcast_basic
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always
+
+

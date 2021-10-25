@@ -1,0 +1,56 @@
+#
+# Calico Network Policy (mcast app)
+#
+#
+---
+apiVersion: projectcalico.org/v3
+kind: NetworkPolicy
+metadata:
+  name: allow-tcp-80
+  namespace: multicast
+
+spec:
+  types:
+    - Ingress
+    - Egress
+  selector: app == 'mcast-app'
+
+  ingress:
+    - action: Allow
+      protocol: TCP
+      source:
+        selector: app == 'mcast-app'
+      destination:
+        ports:
+          - 80
+          
+    - action: Allow
+      protocol: ICMP
+      source:
+        selector: app == 'mcast-app'   
+      destination:
+        selector: app == 'mcast-app'
+
+  egress:
+    - action: Allow
+      notProtocol: ICMP
+      source:
+        selector: app == 'mcast-app'
+      destination:
+        selector: app == 'mcast-app'
+
+    # - action: Allow
+    #   protocol: ICMP
+    #   source:
+    #     selector: app == 'mcast-app'   
+    #   destination:
+    #     selector: app == 'mcast-app'
+
+    # - action: Allow
+    #   protocol: UDP
+    #   source:
+    #     selector: app == 'mcast-app'   
+    #   destination:
+    #     ports:
+    #       - 53     
+

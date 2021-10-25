@@ -1,0 +1,42 @@
+# 
+# 
+# K8 Slave Node #2
+# 
+# 
+---
+# Node k8c1s2
+apiVersion: projectcalico.org/v3
+kind: Node
+metadata:
+  name: k8c1s2.labs.haystacknetworks.com
+spec:
+  bgp:
+    # K8 Node IP/AS
+    ipv4Address: 192.168.9.195/24
+    asNumber: 63553
+
+---
+# ACI Leaf 1
+apiVersion: projectcalico.org/v3
+kind: BGPPeer
+metadata:
+      name: leaf201-k8c1s2
+spec:
+      # ACI Leaf IP/AS
+      peerIP: 192.168.9.204
+      asNumber: 63500
+      # Apply to K8 Node
+      node: k8c1s2.labs.haystacknetworks.com
+
+---
+# ACI Leaf 2
+apiVersion: projectcalico.org/v3
+kind: BGPPeer
+metadata:
+      name: leaf202-k8c1s2
+spec:
+      # ACI Leaf IP/AS
+      peerIP: 192.168.9.205
+      asNumber: 63500
+      # Apply to K8 Node
+      node: k8c1s2.labs.haystacknetworks.com

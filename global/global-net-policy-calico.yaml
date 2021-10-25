@@ -1,0 +1,30 @@
+#
+# Calico Global Network Policy
+#
+#
+---
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: always-permit-icmp
+  annotations:
+    from: everywhere
+    to: everywhere
+spec:
+  selector: all()
+  types: 
+    # - Ingress
+    - Egress
+
+  # ingress:
+  #   - action: Allow
+  #     protocol: ICMP
+  #     selector: "!all()"
+
+  egress:
+    - action: Allow
+      protocol: ICMP
+      source:
+        selector: all()
+      destination:
+        namespaceSelector: global()

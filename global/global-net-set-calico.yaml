@@ -1,0 +1,14 @@
+#
+# Calico Global Network Set
+# Useful for namespaceSelector: global()
+# Defines networks outside the K8 cluster
+#
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkSet
+metadata:
+  name: datacenter-resources
+spec:
+  nets:
+    - 192.168.178.0/24
+    - 192.168.1.0/24
+    - 8.8.8.8/32

@@ -1,0 +1,34 @@
+#
+# Modify
+#   serviceClusterIPs/cidr: Service Network CIDR
+#   nodeToNodeMeshEnabled: False unless iBGP or eBGP Peering required.
+#
+#
+apiVersion: projectcalico.org/v3
+kind: BGPConfiguration
+metadata:
+  name: default
+
+spec:
+  logSeverityScreen: Info
+  nodeToNodeMeshEnabled: false
+
+  #
+  # cluster IP addresses
+  #
+  # Provided via NodePort, allocated by K8
+  # serviceClusterIPs:
+  # - cidr: 172.28.0.0/16
+  
+  #
+  # external IP addresses
+  #
+  #serviceExternalIPs:
+
+  #
+  # load balancer IP addresses 
+  #
+  # Provided via LoadBalancer (MetalLB), allocated via service file
+  # and ip in service file from external LB or auto/orch app
+  serviceLoadBalancerIPs:
+  - cidr: 172.29.0.0/16

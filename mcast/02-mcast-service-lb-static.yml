@@ -1,0 +1,37 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mcast
+  namespace: multicast
+#  labels:
+#    app: mcast-app
+
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: mcast-app
+  type: LoadBalancer  
+  # LoadBalancer EXTERNAL-IP
+  #              Manual Assignment
+  #              Calico will advertise out of cluster
+  #              But without any LB to route traffic to the EXt-IP 
+  #              within K8, this wont work.
+  #externalIPs:
+  loadBalancerIP: 172.29.0.6
+
+  # LoadBalancer service with the static public IP address,
+  #loadBalancerIP: 172.29.0.6
+
+  # Local - Direct traffic to a specific node to 
+  #         be load balanced by kube-proxy to pods
+  #         on the 'local' node only.
+  externalTrafficPolicy: Local
+
+## Info about external lb
+#status:
+#  loadBalancer:
+#    ingress:
+#    - ip: 1.1.1.1
